@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meeting.meeting_server.mapper.MeetingRoomMapper">
+  <resultMap id="BaseResultMap" type="com.meeting.meeting_server.domain.MeetingRoom">
+    <!--@mbg.generated-->
+    <!--@Table meeting_room-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="max_num" jdbcType="INTEGER" property="maxNum" />
+    <result column="subscribe_history_ids" jdbcType="LONGVARCHAR" property="subscribeHistoryIds" />
+    <result column="appliction_id" jdbcType="VARCHAR" property="applictionId" />
+    <result column="appliction_secrit" jdbcType="VARCHAR" property="applictionSecrit" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="msg_id" jdbcType="INTEGER" property="msgId" />
+    <result column="ablity" jdbcType="VARCHAR" property="ablity" />
+    <result column="service" jdbcType="VARCHAR" property="service" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `name`, max_num, subscribe_history_ids, appliction_id, appliction_secrit, product_id, 
+    device_id, msg_id, ablity, service, address
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from meeting_room
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from meeting_room
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.meeting.meeting_server.domain.MeetingRoom" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into meeting_room (`name`, max_num, subscribe_history_ids, 
+      appliction_id, appliction_secrit, product_id, 
+      device_id, msg_id, ablity, 
+      service, address)
+    values (#{name,jdbcType=VARCHAR}, #{maxNum,jdbcType=INTEGER}, #{subscribeHistoryIds,jdbcType=LONGVARCHAR}, 
+      #{applictionId,jdbcType=VARCHAR}, #{applictionSecrit,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, 
+      #{deviceId,jdbcType=VARCHAR}, #{msgId,jdbcType=INTEGER}, #{ablity,jdbcType=VARCHAR}, 
+      #{service,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.meeting.meeting_server.domain.MeetingRoom" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into meeting_room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="maxNum != null">
+        max_num,
+      </if>
+      <if test="subscribeHistoryIds != null">
+        subscribe_history_ids,
+      </if>
+      <if test="applictionId != null">
+        appliction_id,
+      </if>
+      <if test="applictionSecrit != null">
+        appliction_secrit,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="msgId != null">
+        msg_id,
+      </if>
+      <if test="ablity != null">
+        ablity,
+      </if>
+      <if test="service != null">
+        service,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxNum != null">
+        #{maxNum,jdbcType=INTEGER},
+      </if>
+      <if test="subscribeHistoryIds != null">
+        #{subscribeHistoryIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="applictionId != null">
+        #{applictionId,jdbcType=VARCHAR},
+      </if>
+      <if test="applictionSecrit != null">
+        #{applictionSecrit,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="ablity != null">
+        #{ablity,jdbcType=VARCHAR},
+      </if>
+      <if test="service != null">
+        #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meeting.meeting_server.domain.MeetingRoom">
+    <!--@mbg.generated-->
+    update meeting_room
+    <set>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="maxNum != null">
+        max_num = #{maxNum,jdbcType=INTEGER},
+      </if>
+      <if test="subscribeHistoryIds != null">
+        subscribe_history_ids = #{subscribeHistoryIds,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="applictionId != null">
+        appliction_id = #{applictionId,jdbcType=VARCHAR},
+      </if>
+      <if test="applictionSecrit != null">
+        appliction_secrit = #{applictionSecrit,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="msgId != null">
+        msg_id = #{msgId,jdbcType=INTEGER},
+      </if>
+      <if test="ablity != null">
+        ablity = #{ablity,jdbcType=VARCHAR},
+      </if>
+      <if test="service != null">
+        service = #{service,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meeting.meeting_server.domain.MeetingRoom">
+    <!--@mbg.generated-->
+    update meeting_room
+    set `name` = #{name,jdbcType=VARCHAR},
+      max_num = #{maxNum,jdbcType=INTEGER},
+      subscribe_history_ids = #{subscribeHistoryIds,jdbcType=LONGVARCHAR},
+      appliction_id = #{applictionId,jdbcType=VARCHAR},
+      appliction_secrit = #{applictionSecrit,jdbcType=VARCHAR},
+      product_id = #{productId,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      msg_id = #{msgId,jdbcType=INTEGER},
+      ablity = #{ablity,jdbcType=VARCHAR},
+      service = #{service,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
