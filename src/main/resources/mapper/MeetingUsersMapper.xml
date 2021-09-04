@@ -23,6 +23,30 @@
     from meeting_users
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="queryUsers" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from meeting_users
+    <where>
+      1=1
+    </where>
+    limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="getByOpenId" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from meeting_users
+    where open_id=#{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="getByUsername" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from meeting_users
+    where user_name = #{username,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from meeting_users
@@ -117,4 +141,6 @@
       is_register = #{isRegister,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

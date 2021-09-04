@@ -1,12 +1,15 @@
 package com.meeting.meeting_server.controller;
 
-import com.meeting.meeting_server.domain.MeetingRoom;
+import com.meeting.meeting_server.domain.SubscribeHistory;
+import com.meeting.meeting_server.pojo.enums.StatusEnum;
+import com.meeting.meeting_server.pojo.query.PageQuery;
 import com.meeting.meeting_server.pojo.vo.BaseVo;
+import com.meeting.meeting_server.services.ApplyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author zcw
@@ -15,36 +18,44 @@ import java.util.List;
 @RestController
 public class ApplyController {
 
-    @RequestMapping("/list")
-    public BaseVo list(){
+    @Autowired
+    private ApplyService applyService;
 
-        return null;
+    @RequestMapping("/getByRoomIdAndDay")
+    public BaseVo getByRoomIdAndDay(Integer roomId, Date beginTime,Date endTime){
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.getByRoomIdAndDay(roomId, beginTime, endTime));
+    }
+
+    @RequestMapping("/addOne")
+    public BaseVo addOne(SubscribeHistory subscribeHistory){
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.save(subscribeHistory));
     }
 
     @RequestMapping("/getByUserId")
-    public BaseVo getByUserId(Integer userId, Date date){
-        return null;
-    }
-
-    @RequestMapping("/deleteById")
-    public BaseVo delete(Integer id){
-        return null;
-    }
-
-    @RequestMapping("/getById")
-    public BaseVo getById(Integer id){
-        return null;
+    public BaseVo getByUserId(Integer roomId,Date beginTime,Date endTime,Integer userId){
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.getByUserId(roomId, beginTime, endTime, userId));
     }
 
     @RequestMapping("/update")
-    public BaseVo update(MeetingRoom meetingRoom){
-        return null;
+    public BaseVo update(SubscribeHistory subscribeHistory){
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.update(subscribeHistory));
     }
 
-
-    @RequestMapping("/addOne")
-    public BaseVo addOne(MeetingRoom meetingRoom){
-        return null;
+    @RequestMapping("/list")
+    public BaseVo list(PageQuery query){
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.listHistory(query));
     }
+
+    @RequestMapping("/delete")
+    public BaseVo delete(Integer id){
+        applyService.delete(id);
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),"删除成功");
+    }
+
+//    @RequestMapping("/getTimes")
+//    public BaseVo getTimes(Integer id){
+//        return new BaseVo(StatusEnum.SUCCESS.getCode());
+//    }
+
 
 }

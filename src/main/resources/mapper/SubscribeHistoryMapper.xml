@@ -23,6 +23,55 @@
     from subscribe_history
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="listHistory" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from subscribe_history
+    <where>
+      1=1
+    </where>
+    limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="getByRoomIdAndDay" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from subscribe_history
+    <where>
+      1=1
+      <if test="param1 != null">
+        and room_id =#{param1,jdbcType=INTEGER}
+      </if>
+      <if test="param2 != null">
+        and begin_time =#{param2,jdbcType=TIMESTAMP}
+      </if>
+      <if test="param3 != null">
+        and end_time =#{param3,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+  <select id="getByUserId" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from subscribe_history
+    <where>
+      1=1
+      <if test="param1 != null">
+        and room_id =#{param1,jdbcType=INTEGER}
+      </if>
+      <if test="param2 != null">
+        and begin_time =#{param2,jdbcType=TIMESTAMP}
+      </if>
+      <if test="param3 != null">
+        and end_time =#{param3,jdbcType=TIMESTAMP}
+      </if>
+      <if test="param4 != null">
+        and user_id = #{param4,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from subscribe_history
@@ -117,4 +166,5 @@
       end_time = #{endTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

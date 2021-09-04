@@ -3,9 +3,14 @@ package com.meeting.meeting_server.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.meeting.meeting_server.domain.MeetingUsers;
+import com.meeting.meeting_server.pojo.enums.StatusEnum;
+import com.meeting.meeting_server.pojo.query.PageQuery;
 import com.meeting.meeting_server.pojo.vo.BaseVo;
+import com.meeting.meeting_server.services.UserService;
 import com.meeting.meeting_server.utils.ImportExcel;
+import com.meeting.meeting_server.utils.Md5Util;
 import com.meeting.meeting_server.utils.Request;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,29 +27,45 @@ import java.util.Map;
 @RestController
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/getByOpenId")
     public BaseVo getByOpenId(String openId) {
-        return null;
+        return new BaseVo(StatusEnum.SUCCESS.getCode(), userService.getByOpenId(openId));
     }
 
     @RequestMapping("/insert")
-    public String insert(MeetingUsers meetingUsers) {
-        return null;
+    public BaseVo insert(MeetingUsers meetingUsers) {
+        if (userService.getByUsername(meetingUsers.getUserName())!=null) {
+            return new BaseVo(StatusEnum.EMAIL_EXISTED.getCode(),"用户已存在");
+        }
+        if (userService.save(meetingUsers)==1){
+            return new BaseVo(StatusEnum.SUCCESS.getCode(), "添加成功");
+        }
+        return new BaseVo(StatusEnum.ERROR.getCode(), "添加失败");
     }
 
     @GetMapping("/getAll")
-    public List<MeetingUsers> getAll() {
-        return null;
+    public BaseVo list(PageQuery query) {
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),userService.queryUsers(query), "添加成功");
     }
 
     @GetMapping("/getById")
-    public MeetingUsers getById(Integer id) {
-        return null;
+    public BaseVo getById(Integer id) {
+        return new BaseVo(StatusEnum.SUCCESS.getCode(), userService.getById(id));
     }
 
     @RequestMapping("/wxLogin")
-    public MeetingUsers wxLogin(String userName, String password) {
-        return null;
+    public BaseVo wxLogin(String userName, String password) {
+        MeetingUsers meetingUser = userService.getByUsername(userName);
+        if (meetingUser==null){
+            return new BaseVo(StatusEnum.ERROR.getCode(), "无此用户");
+        }
+        if (Md5Util.StringInMd5(password).equals(meetingUser.getPassword())) {
+            return new BaseVo(StatusEnum.SUCCESS.getCode(), meetingUser);
+        }
+        return new BaseVo(StatusEnum.PASSWORD_WRONG.getCode(), "密码错误");
     }
 
     @RequestMapping("/login")
@@ -55,9 +76,11 @@ public class UserController {
         String openid = SessionKeyOpenId.getString("openid");
         String sessionKey = SessionKeyOpenId.getString("session_key");
         //User user = userService.findByOpenid( openid );
-        MeetingUsers meetingUsers = meetingUsersService.getByOpenId(openid);
+        MeetingUsers meetingUsers = userService.getByOpenId(openid);
         if (meetingUsers == null) {
-            return meetingUsersService.insert(openid);
+            meetingUsers = new MeetingUsers();
+            meetingUsers.setOpenId(openid);
+            return meetingUsers;
         } else {
             return meetingUsers;
         }
@@ -67,23 +90,29 @@ public class UserController {
     }
 
     @RequestMapping("/update")
-    public String update(MeetingUsers meetingUsers) {
-        return meetingUsersService.update(meetingUsers);
+    public BaseVo update(MeetingUsers meetingUsers) {
+        if (userService.update(meetingUsers)==1) {
+            return new BaseVo(StatusEnum.SUCCESS.getCode(), "修改成功");
+        }
+        return new BaseVo(StatusEnum.ERROR.getCode(), "失败");
     }
 
     @RequestMapping("/deleteById")
     public void deleteById(Integer id) {
-        meetingUsersService.deleteById(id);
+        userService.delete(id);
     }
 
-    @RequestMapping("/register")
-    public Object register(String userName){
-        return meetingUsersService.register(userName);
-    }
+//    @RequestMapping("/register")
+//    public Object register(String userName){
+//        return meetingUsersService.register(userName);
+//    }
 
     @RequestMapping("/modifyPassword")
-    public String modifyPassword(Integer id,String password1,String password2){
-        return meetingUsersService.modifyPassword(id,password1,password2);
+    public BaseVo modifyPassword(MeetingUsers users){
+        if (userService.update(users) ==1) {
+            return new BaseVo(StatusEnum.SUCCESS.getCode(), "成功");
+        }
+        return new BaseVo(StatusEnum.ERROR.getCode(), "失败");
     }
 
     public static JSONObject getSessionKeyOrOpenId(String code) {
@@ -127,7 +156,7 @@ public class UserController {
             deleteFile(excelFile);
             System.out.println(newStudents.size());
             for (int i = 0; i < newStudents.size(); i++) {
-                meetingUsersService.insert(newStudents.get(i));
+                userService.save(newStudents.get(i));
             }
         }catch (Exception e){
             System.out.println("文件格式出错");
@@ -143,8 +172,9 @@ public class UserController {
      */
     private void deleteFile(File path) {
         if (null != path) {
-            if (!path.exists())
+            if (!path.exists()) {
                 return;
+            }
             if (path.isFile()) {
                 boolean result = path.delete();
                 int tryCount = 0;

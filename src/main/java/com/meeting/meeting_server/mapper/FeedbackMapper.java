@@ -1,7 +1,10 @@
 package com.meeting.meeting_server.mapper;
 
 import com.meeting.meeting_server.domain.Feedback;
+import com.meeting.meeting_server.pojo.query.PageQuery;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author zcw
@@ -19,4 +22,6 @@ public interface FeedbackMapper {
     int updateByPrimaryKeySelective(Feedback record);
 
     int updateByPrimaryKey(Feedback record);
+
+    List<Feedback> queryFeedback(PageQuery query);
 }

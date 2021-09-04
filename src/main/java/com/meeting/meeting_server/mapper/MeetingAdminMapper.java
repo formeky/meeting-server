@@ -16,6 +16,8 @@ public interface MeetingAdminMapper {
 
     MeetingAdmin selectByPrimaryKey(Integer id);
 
+    MeetingAdmin selectByUsername(String username);
+
     int updateByPrimaryKeySelective(MeetingAdmin record);
 
     int updateByPrimaryKey(MeetingAdmin record);

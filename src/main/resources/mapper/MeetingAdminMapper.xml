@@ -19,6 +19,15 @@
     from meeting_admin
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from meeting_admin
+    where id = #{username,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from meeting_admin
@@ -69,4 +78,6 @@
       `password` = #{password,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
 </mapper>

@@ -20,6 +20,18 @@
     from feedback
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="queryFeedback" resultMap="BaseResultMap" parameterType="com.meeting.meeting_server.pojo.query.PageQuery">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from feedback
+    <where>
+      <if test="page != null and rows != null">
+        1=1
+      </if>
+    </where>
+    limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
     delete from feedback
@@ -82,4 +94,5 @@
       user_id = #{userId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>
