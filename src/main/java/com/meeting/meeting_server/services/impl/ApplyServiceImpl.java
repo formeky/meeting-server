@@ -22,6 +22,11 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
+    public List<SubscribeHistory> getOneDay(Integer roomId, Date beginTime, Date endTime) {
+        return subscribeHistoryMapper.getOneDay(roomId, beginTime, endTime);
+    }
+
+    @Override
     public int save(SubscribeHistory subscribeHistory) {
         return subscribeHistoryMapper.insertSelective(subscribeHistory);
     }

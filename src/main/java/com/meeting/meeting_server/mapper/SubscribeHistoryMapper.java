@@ -28,5 +28,7 @@ public interface SubscribeHistoryMapper {
 
     List<SubscribeHistory> getByRoomIdAndDay(Integer roomId, Date beginTime, Date endTime);
 
+    List<SubscribeHistory> getOneDay(Integer userId, Date beginTime, Date endTime);
+
     List<SubscribeHistory> getByUserId(Integer roomId, Date beginTime, Date endTime, Integer userId);
 }

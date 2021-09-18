@@ -9,6 +9,8 @@ import java.util.List;
 public interface ApplyService {
     public List<SubscribeHistory> getByRoomIdAndDay(Integer roomId, Date beginTime,Date endTime);
 
+    public List<SubscribeHistory> getOneDay(Integer userId, Date beginTime,Date endTime);
+
     public int save(SubscribeHistory subscribeHistory);
 
     public List<SubscribeHistory> getByUserId(Integer roomId,Date beginTime,Date endTime,Integer userId);

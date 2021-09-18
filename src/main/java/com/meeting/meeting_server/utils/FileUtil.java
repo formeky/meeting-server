@@ -1,6 +1,7 @@
 package com.meeting.meeting_server.utils;
 
-import com.example.passwordappeal.config.AppConfig;
+
+import com.meeting.meeting_server.conf.AppConfig;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.web.multipart.MultipartFile;
 

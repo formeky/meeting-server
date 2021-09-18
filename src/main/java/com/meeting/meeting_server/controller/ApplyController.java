@@ -5,10 +5,13 @@ import com.meeting.meeting_server.pojo.enums.StatusEnum;
 import com.meeting.meeting_server.pojo.query.PageQuery;
 import com.meeting.meeting_server.pojo.vo.BaseVo;
 import com.meeting.meeting_server.services.ApplyService;
+import com.meeting.meeting_server.utils.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -26,8 +29,23 @@ public class ApplyController {
         return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.getByRoomIdAndDay(roomId, beginTime, endTime));
     }
 
-    @RequestMapping("/addOne")
-    public BaseVo addOne(SubscribeHistory subscribeHistory){
+    @PostMapping("/getOneDay")
+    public BaseVo getOneDay(Integer userId, Integer year,String createTime) throws ParseException {
+        Date beginTime = DateUtil.getDateFromParam(year,createTime, "00:00");
+        Date endTime = DateUtil.getDateFromParam(year,createTime, "23:59");
+        return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.getOneDay(userId, beginTime, endTime));
+    }
+
+    @PostMapping("/addOne")
+    public BaseVo addOne(Integer roomId,Integer userId,String status,String createTime,String subscribeTime,Integer year) throws ParseException {
+        String[] s = subscribeTime.split("-");
+        SubscribeHistory subscribeHistory = new SubscribeHistory();
+        subscribeHistory.setCreateTime(new Date());
+        subscribeHistory.setBeginTime(DateUtil.getDateFromParam(year, createTime, s[0]));
+        subscribeHistory.setEndTime(DateUtil.getDateFromParam(year, createTime, s[1]));
+        subscribeHistory.setRoomId(roomId);
+        subscribeHistory.setUserId(userId);
+        subscribeHistory.setStatus(status);
         return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.save(subscribeHistory));
     }
 

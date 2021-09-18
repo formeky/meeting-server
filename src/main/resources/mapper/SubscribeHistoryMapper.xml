@@ -33,6 +33,24 @@
     </where>
     limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
   </select>
+  <select id="getOneDay" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from subscribe_history
+    <where>
+      1=1
+      <if test="param1 != null">
+        and user_id = #{param1,jdbcType=INTEGER}
+      </if>
+      <if test="param2 != null and param3 != null">
+        and begin_time >=#{param2,jdbcType=TIMESTAMP}
+      </if>
+      <if test="param2 != null and param3 != null">
+        and #{param3,jdbcType=TIMESTAMP} >= end_time
+      </if>
+    </where>
+  </select>
   <select id="getByRoomIdAndDay" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select
@@ -83,7 +101,7 @@
       user_id, begin_time, end_time
       )
     values (#{createTime,jdbcType=TIMESTAMP}, #{roomId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=VARCHAR}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      #{userId,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.meeting.meeting_server.domain.SubscribeHistory" useGeneratedKeys="true">
@@ -120,7 +138,7 @@
         #{status,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
-        #{userId,jdbcType=VARCHAR},
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="beginTime != null">
         #{beginTime,jdbcType=TIMESTAMP},
@@ -144,7 +162,7 @@
         `status` = #{status,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="beginTime != null">
         begin_time = #{beginTime,jdbcType=TIMESTAMP},
@@ -161,10 +179,11 @@
     set create_time = #{createTime,jdbcType=TIMESTAMP},
       room_id = #{roomId,jdbcType=INTEGER},
       `status` = #{status,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
       begin_time = #{beginTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 
 </mapper>
