@@ -57,12 +57,12 @@ public class UserController {
     }
 
     @RequestMapping("/wxLogin")
-    public BaseVo wxLogin(String userName, String password) {
-        MeetingUsers meetingUser = userService.getByUsername(userName);
+    public BaseVo wxLogin(String username, String password) {
+        MeetingUsers meetingUser = userService.getByUsername(username);
         if (meetingUser==null){
             return new BaseVo(StatusEnum.ERROR.getCode(), "无此用户");
         }
-        if (Md5Util.StringInMd5(password).equals(meetingUser.getPassword())) {
+        if (password.equals(meetingUser.getPassword())) {
             return new BaseVo(StatusEnum.SUCCESS.getCode(), meetingUser);
         }
         return new BaseVo(StatusEnum.PASSWORD_WRONG.getCode(), "密码错误");

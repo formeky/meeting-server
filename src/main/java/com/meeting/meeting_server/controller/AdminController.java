@@ -26,7 +26,7 @@ public class AdminController {
         if (adminByUsername==null){
             return new BaseVo(StatusEnum.ERROR.getCode(), "无此用户");
         }
-        if (Md5Util.StringInMd5(admin.getPassword()).equals(adminByUsername.getPassword())){
+        if (admin.getPassword().equals(adminByUsername.getPassword())){
             return new BaseVo(StatusEnum.SUCCESS.getCode(), TokenUtil.getToken(admin.getUserName()),"登陆成功");
         }else{
             return new BaseVo(StatusEnum.PASSWORD_WRONG.getCode(), "登陆失败");
