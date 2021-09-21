@@ -37,7 +37,6 @@ public class ApplyController {
 
     @PostMapping("/addOne")
     public BaseVo addOne(Integer roomId,Integer userId,String status,String createTime,String subscribeTime,Integer year) throws ParseException {
-        String[] s = subscribeTime.split("-");
         SubscribeHistory subscribeHistory = new SubscribeHistory();
         subscribeHistory.setRoomId(roomId);
         subscribeHistory.setUserId(userId);
@@ -49,6 +48,7 @@ public class ApplyController {
 
     @RequestMapping("/getByUserId")
     public BaseVo getByUserId(Integer userId){
+
         return new BaseVo(StatusEnum.SUCCESS.getCode(),applyService.getByUserId(userId));
     }
 

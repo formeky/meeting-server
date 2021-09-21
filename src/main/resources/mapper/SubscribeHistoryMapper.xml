@@ -31,8 +31,11 @@
   </select>
   <select id="getByUserId" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
+    subscribe_history.id, create_time, room_id, `status`, user_id, period,
+    `name`, max_num AS maxNum, subscribe_history_ids AS subscribeHistoryIds, appliction_id AS applictionId, appliction_secrit AS applictionSecrit, product_id AS productId,
+    device_id AS deviceId, msg_id AS msgId, ablity, service, address
     from subscribe_history
+    left join meeting_room mr on mr.id = subscribe_history.room_id
     where user_id = #{param1,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
