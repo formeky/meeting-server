@@ -18,12 +18,12 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public List<SubscribeHistory> getByRoomIdAndDay(Integer roomId, Date beginTime, Date endTime) {
-        return subscribeHistoryMapper.getByRoomIdAndDay(roomId, beginTime, endTime);
+        return null;
     }
 
     @Override
-    public List<SubscribeHistory> getOneDay(Integer roomId, Date beginTime, Date endTime) {
-        return subscribeHistoryMapper.getOneDay(roomId, beginTime, endTime);
+    public List<SubscribeHistory> getOneDay(Integer userId, String createTime) {
+        return subscribeHistoryMapper.getOneDay(userId, createTime);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public List<SubscribeHistory> getByUserId(Integer roomId, Date beginTime, Date endTime, Integer userId) {
-        return subscribeHistoryMapper.getByUserId(roomId, beginTime, endTime, userId);
+    public List<SubscribeHistory> getByUserId(Integer userId) {
+        return subscribeHistoryMapper.getByUserId(userId);
     }
 
     @Override
@@ -43,8 +43,9 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Override
     public List<SubscribeHistory> listHistory(PageQuery query) {
-        return subscribeHistoryMapper.listHistory(query);
+        return null;
     }
+
 
     @Override
     public void delete(Integer id) {

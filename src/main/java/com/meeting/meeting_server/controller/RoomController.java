@@ -1,7 +1,6 @@
 package com.meeting.meeting_server.controller;
 
 import com.meeting.meeting_server.domain.MeetingRoom;
-import com.meeting.meeting_server.domain.SubscribeHistory;
 import com.meeting.meeting_server.pojo.enums.StatusEnum;
 import com.meeting.meeting_server.pojo.query.PageQuery;
 import com.meeting.meeting_server.pojo.vo.BaseVo;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author zcw

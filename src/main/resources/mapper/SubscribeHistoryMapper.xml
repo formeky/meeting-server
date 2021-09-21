@@ -5,16 +5,15 @@
     <!--@mbg.generated-->
     <!--@Table subscribe_history-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="room_id" jdbcType="INTEGER" property="roomId" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="user_id" jdbcType="VARCHAR" property="userId" />
-    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
-    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="period" jdbcType="VARCHAR" property="period" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, create_time, room_id, `status`, user_id, begin_time, end_time
+    id, create_time, room_id, `status`, user_id, period
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -23,72 +22,18 @@
     from subscribe_history
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="listHistory" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from subscribe_history
-    <where>
-      1=1
-    </where>
-    limit #{start,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
-  </select>
   <select id="getOneDay" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
     select
     <include refid="Base_Column_List" />
     from subscribe_history
-    <where>
-      1=1
-      <if test="param1 != null">
-        and user_id = #{param1,jdbcType=INTEGER}
-      </if>
-      <if test="param2 != null and param3 != null">
-        and begin_time >=#{param2,jdbcType=TIMESTAMP}
-      </if>
-      <if test="param2 != null and param3 != null">
-        and #{param3,jdbcType=TIMESTAMP} >= end_time
-      </if>
-    </where>
-  </select>
-  <select id="getByRoomIdAndDay" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
-    select
-    <include refid="Base_Column_List" />
-    from subscribe_history
-    <where>
-      1=1
-      <if test="param1 != null">
-        and room_id =#{param1,jdbcType=INTEGER}
-      </if>
-      <if test="param2 != null">
-        and begin_time =#{param2,jdbcType=TIMESTAMP}
-      </if>
-      <if test="param3 != null">
-        and end_time =#{param3,jdbcType=TIMESTAMP}
-      </if>
-    </where>
+    where user_id = #{param1,jdbcType=INTEGER}
+    and create_time = #{param2,jdbcType=VARCHAR}
   </select>
   <select id="getByUserId" resultMap="BaseResultMap">
-    <!--@mbg.generated-->
     select
     <include refid="Base_Column_List" />
     from subscribe_history
-    <where>
-      1=1
-      <if test="param1 != null">
-        and room_id =#{param1,jdbcType=INTEGER}
-      </if>
-      <if test="param2 != null">
-        and begin_time =#{param2,jdbcType=TIMESTAMP}
-      </if>
-      <if test="param3 != null">
-        and end_time =#{param3,jdbcType=TIMESTAMP}
-      </if>
-      <if test="param4 != null">
-        and user_id = #{param4,jdbcType=INTEGER}
-      </if>
-    </where>
+    where user_id = #{param1,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--@mbg.generated-->
@@ -98,11 +43,9 @@
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.meeting.meeting_server.domain.SubscribeHistory" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into subscribe_history (create_time, room_id, `status`, 
-      user_id, begin_time, end_time
-      )
-    values (#{createTime,jdbcType=TIMESTAMP}, #{roomId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
-      #{userId,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
-      )
+      user_id, period)
+    values (#{createTime,jdbcType=VARCHAR}, #{roomId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{period,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.meeting.meeting_server.domain.SubscribeHistory" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -120,16 +63,13 @@
       <if test="userId != null">
         user_id,
       </if>
-      <if test="beginTime != null">
-        begin_time,
-      </if>
-      <if test="endTime != null">
-        end_time,
+      <if test="period != null">
+        period,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="roomId != null">
         #{roomId,jdbcType=INTEGER},
@@ -140,11 +80,8 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="beginTime != null">
-        #{beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null">
-        #{endTime,jdbcType=TIMESTAMP},
+      <if test="period != null">
+        #{period,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -153,7 +90,7 @@
     update subscribe_history
     <set>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="roomId != null">
         room_id = #{roomId,jdbcType=INTEGER},
@@ -164,11 +101,8 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="beginTime != null">
-        begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null">
-        end_time = #{endTime,jdbcType=TIMESTAMP},
+      <if test="period != null">
+        period = #{period,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -176,12 +110,11 @@
   <update id="updateByPrimaryKey" parameterType="com.meeting.meeting_server.domain.SubscribeHistory">
     <!--@mbg.generated-->
     update subscribe_history
-    set create_time = #{createTime,jdbcType=TIMESTAMP},
+    set create_time = #{createTime,jdbcType=VARCHAR},
       room_id = #{roomId,jdbcType=INTEGER},
       `status` = #{status,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
-      begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP}
+      period = #{period,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
